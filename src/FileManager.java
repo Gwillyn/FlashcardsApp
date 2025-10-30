@@ -16,4 +16,9 @@ class FileManager {
     }
 
   }
+
+  public static void saveFile() {
+    System.out.println("Saving File");
+  }
+
 }
