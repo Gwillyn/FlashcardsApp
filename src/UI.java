@@ -34,12 +34,18 @@ class UI {
     System.out.println("\033[H\033[2J");
   }
 
-  public static void menu(Scanner scanner) {
+  public static void menu(Scanner scanner, CardManager file) {
     boolean running = true;
     while (running) {
       clear();
-      System.out.println("Welcome to the Flashcards app\n   Choose one of the following: \n");
+      System.out.print("Welcome to the Flashcards app   ");
+      if (file.getScore() > 0) {
+        System.out.print("       Score: " + file.getScore() + "\n");
+
+      }
+      System.out.println("Choose one of the following:");
       System.out.println("1: Play\n2: Load Cards\n3: Add Cards\n4: Delete Cards\n5: quit\n");
+
       int response = 0;
       try {
         response = scanner.nextInt();
@@ -52,6 +58,7 @@ class UI {
       }
       switch (response) {
         case 1:
+
           break;
         case 2:
           break;
