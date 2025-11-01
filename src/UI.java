@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 class UI {
 
-  public static void returnToMenu(Scanner scanner) {
+  public static void returnToMenu() {
     System.out.println();
     System.out.print("Returning to menu");
     System.out.print(".");
@@ -33,6 +33,7 @@ class UI {
 
   public static void clear() {
     System.out.println("\033[H\033[2J");
+    System.out.flush();
   }
 
   public static void menu(Scanner scanner, CardManager file) {
@@ -45,7 +46,7 @@ class UI {
 
       }
       System.out.println("Choose one of the following:");
-      System.out.println("1: Play\n2: Load Cards\n3: Add Cards\n4: Delete Cards\n5: quit\n");
+      System.out.println("1: Play\n2: Load Cards\n3: Add Cards\n4: Delete Cards\n5: Quit\n");
 
       int response = 0;
       try {
@@ -53,7 +54,6 @@ class UI {
         scanner.nextLine();
       } catch (Exception e) {
         System.out.println("\nPlease enter the proper selection\nPress [enter] to continue:\n");
-        scanner.nextLine();
         scanner.nextLine();
         continue;
       }
@@ -80,9 +80,10 @@ class UI {
   }
 
   static private void addCardChoice(Scanner scanner, CardManager file) {
+    String errorMessage = "Please enter a valid input...";
     boolean active = true;
+    clear();
     while (active) {
-      clear();
       int choice = 0;
       System.out.println(
           "Would you like to make a general `Question/Answer` card or a `Multiple Choice` card?\n1: Question/Answer\n2: Multiple Choice\n");
@@ -90,8 +91,6 @@ class UI {
         choice = scanner.nextInt();
         scanner.nextLine();
       } catch (Exception e) {
-        System.out.println("Please enter a valid choice...");
-        sleep(2);
         scanner.nextLine();
       }
       clear();
@@ -101,66 +100,86 @@ class UI {
         System.out.println("Please enter an answer: ");
         String answer = scanner.nextLine();
         file.addCard(new Flashcard(question, answer));
-        break;
+        System.out.println("Card added...");
       } else if (choice == 2) {
         String[] answers;
-        boolean mActive = true;
         System.out.println("Please enter a question: ");
         String question = scanner.nextLine();
         int choices = 0;
-        while (mActive) {
+        while (true) {
           System.out.println("Please enter the number of multiple choices you'd like [between 2 and 5]: ");
           try {
             choices = scanner.nextInt();
             scanner.nextLine();
-            break;
           } catch (InputMismatchException e) {
-            System.out.println("Enter a valid input...");
-            sleep(2);
             scanner.nextLine();
           }
+          if (choices >= 2 && choices <= 5) {
+            answers = new String[choices];
+            break;
+          } else {
+            clear();
+            System.out.println(errorMessage);
+          }
         }
-        if (choices >= 2 && choices <= 5) {
-          answers = new String[choices];
-        } else {
-          System.out.println("Please enter a valid input: ");
-          continue;
-        }
+
         for (int i = 0; i < answers.length; i++) {
-          System.out.println("Enter your question " + (i + 1) + ": ");
+          System.out.println("Enter your answer " + (i + 1) + ": ");
           String answer = scanner.nextLine();
           answers[i] = answer;
         }
-        while (mActive) {
+        while (true) {
           System.out.println("Which answer is the correct one: ");
           for (int i = 0; i < answers.length; i++) {
             System.out.println((i + 1) + ": " + answers[i]);
           }
           int rightAnswer = 0;
           try {
-            rightAnswer = scanner.nextInt();
-
+            rightAnswer = scanner.nextInt() - 1;
+            scanner.nextLine();
           } catch (InputMismatchException e) {
-            System.out.println("Please enter a valid input");
-          }
-          if (rightAnswer > 0 && rightAnswer <= answers.length + 1) {
-            rightAnswer--;
-            System.out.println("Hurray!!");
-            System.out.println(answers[rightAnswer]);
-            sleep(2);
-            active = false;
-            break;
-            // Add functionality to add the choice card. Also debug fucntion
-
-          } else {
-            System.out.println("Please try again with a valid input...'");
+            clear();
+            System.out.println(errorMessage);
+            scanner.nextLine();
             continue;
           }
+          if (rightAnswer >= 0 && rightAnswer < answers.length) {
+            file.addCard(new ChoiceCard(question, answers, rightAnswer));
+            clear();
+            System.out.println("Card added...");
+            break;
+
+          } else {
+            clear();
+            System.out.println(errorMessage);
+          }
         }
-
+      } else {
+        clear();
+        continue;
       }
-
+      int repeat = 0;
+      while (true) {
+        System.out.println("Would you like to add another card? [1: yes, 2: No]");
+        try {
+          repeat = scanner.nextInt();
+          scanner.nextLine();
+        } catch (InputMismatchException e) {
+          scanner.nextLine();
+        }
+        if (repeat == 2) {
+          clear();
+          active = false;
+          returnToMenu();
+          break;
+        } else if (repeat == 1) {
+          clear();
+          break;
+        } else {
+          clear();
+          System.out.println(errorMessage);
+        }
+      }
     }
   }
-
 }
