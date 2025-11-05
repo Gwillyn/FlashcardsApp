@@ -8,7 +8,7 @@ class CardManager {
   List<Flashcard> cards;
 
   CardManager(List<Flashcard> cards, String name, int score) {
-    this.cards = new ArrayList<>();
+    this.cards = new ArrayList<>(cards);
     this.name = name;
     this.score = score;
   }
@@ -35,7 +35,7 @@ class CardManager {
   }
 
   public void deleteCard(Flashcard card) {
-    cards.add(card);
+    cards.remove(card);
 
   }
 

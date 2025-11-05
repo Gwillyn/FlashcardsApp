@@ -67,6 +67,7 @@ class UI {
           addCardChoice(scanner, file);
           break;
         case 4:
+          deleteCard(scanner, file);
           break;
         case 5:
           running = false;
@@ -74,6 +75,61 @@ class UI {
         default:
           break;
 
+      }
+
+    }
+  }
+
+  static private void deleteCard(Scanner scanner, CardManager file) {
+    boolean active = true;
+    boolean repeat = true;
+    while (active) {
+      clear();
+      System.out.println("Please select a card to delete:\nType [99] to exit.");
+      for (int i = 0; i < file.cards.size(); i++) {
+        System.out.println((i + 1) + ": " + file.cards.get(i).getQuestion());
+      }
+      while (true) {
+        int choice = 0;
+        try {
+          choice = (scanner.nextInt() - 1);
+          if (choice == 98) {
+            active = false;
+            repeat = false;
+            scanner.nextLine();
+            returnToMenu();
+            break;
+          } else if (choice >= 0 && choice < file.cards.size()) {
+            scanner.nextLine();
+            file.deleteCard(file.cards.get(choice));
+            break;
+          } else {
+            System.out.println("Please enter a valid input...");
+          }
+        } catch (InputMismatchException e) {
+          System.out.println("Please enter a valid input...");
+          scanner.nextLine();
+        }
+      }
+      if (repeat) {
+
+        System.out.println("Would you like to delete another card? [1: Yes, 2: No]");
+        while (true) {
+          int choice = 0;
+          try {
+            choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice == 1) {
+              break;
+            } else if (choice == 2) {
+              active = false;
+              break;
+            }
+          } catch (InputMismatchException e) {
+            System.out.println("Please enter a valid input...");
+            scanner.nextLine();
+          }
+        }
       }
 
     }
