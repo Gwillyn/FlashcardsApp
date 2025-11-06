@@ -41,8 +41,8 @@ class UI {
     while (running) {
       clear();
       System.out.print("Welcome to the Flashcards app   ");
-      if (file.getScore() > 0) {
-        System.out.print("       Score: " + file.getScore() + "\n");
+      if (file.getHighScore() > 0) {
+        System.out.print("        High-Score: " + file.getHighScore() + "\n");
 
       }
       System.out.println("Choose one of the following:");
@@ -57,9 +57,11 @@ class UI {
         scanner.nextLine();
         continue;
       }
+
+      // Main game loop UI.
       switch (response) {
         case 1:
-
+          file.playCards();
           break;
         case 2:
           break;
@@ -123,6 +125,7 @@ class UI {
               break;
             } else if (choice == 2) {
               active = false;
+              returnToMenu();
               break;
             }
           } catch (InputMismatchException e) {

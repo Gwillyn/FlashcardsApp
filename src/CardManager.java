@@ -4,13 +4,13 @@ import java.util.ArrayList;
 class CardManager {
 
   String name;
-  int score;
+  int highscore;
   List<Flashcard> cards;
 
-  CardManager(List<Flashcard> cards, String name, int score) {
+  CardManager(List<Flashcard> cards, String name, int highscore) {
     this.cards = new ArrayList<>(cards);
     this.name = name;
-    this.score = score;
+    this.highscore = highscore;
   }
 
   public void setName(String name) {
@@ -21,12 +21,12 @@ class CardManager {
     return name;
   }
 
-  public int getScore() {
-    return score;
+  public int getHighScore() {
+    return highscore;
   }
 
-  public void setScore(int score) {
-    this.score = score;
+  public void setScore(int highscore) {
+    this.highscore = highscore;
   }
 
   public void addCard(Flashcard card) {
@@ -40,9 +40,11 @@ class CardManager {
   }
 
   public void playCards() {
+    int score = 0;
     UI.clear();
     for (Flashcard card : cards) {
       System.out.println("Question: \n" + card.getQuestion());
+      UI.sleep(1);
 
     }
 
