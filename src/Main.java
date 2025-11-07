@@ -10,7 +10,7 @@ class Main {
     testCards.add(new Flashcard("What is 2 + 2?", "4"));
     testCards.add(new Flashcard("Capital of France?", "Paris"));
     testCards.add(new Flashcard("Color of the sky?", "Blue"));
-    CardManager cards = new CardManager(testCards, "Test", 4);
+    CardManager cards = new CardManager(testCards, "Test", 0);
 
     UI.menu(scanner, cards);
   }

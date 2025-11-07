@@ -9,4 +9,12 @@ class ChoiceCard extends Flashcard {
     this.answers = answers;
 
   }
+
+  public int getRightAnswer() {
+    return rightAnswer;
+  }
+
+  public String[] getAnswers() {
+    return answers;
+  }
 }

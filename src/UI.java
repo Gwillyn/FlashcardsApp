@@ -61,7 +61,7 @@ class UI {
       // Main game loop UI.
       switch (response) {
         case 1:
-          file.playCards();
+          file.playCards(scanner);
           break;
         case 2:
           break;
