@@ -40,12 +40,14 @@ class UI {
     boolean running = true;
     while (running) {
       clear();
-      System.out.print("Welcome to the Flashcards app   ");
+      System.out.println("Welcome to the Flashcards app\n");
       if (file.getHighScore() > 0) {
-        System.out.print("        High-Score: " + file.getHighScore() + "\n");
+        System.out.println("       High-Score: " + file.getHighScore());
 
+      } else {
+        System.out.println("       No High Score!");
       }
-      System.out.println("Choose one of the following:");
+      System.out.println("\nChoose one of the following:");
       System.out.println("1: Play\n2: Load Cards\n3: Add Cards\n4: Delete Cards\n5: Quit\n");
 
       int response = 0;
@@ -145,14 +147,13 @@ class UI {
     while (active) {
       int choice = 0;
       System.out.println(
-          "Would you like to make a general `Question/Answer` card or a `Multiple Choice` card?\n1: Question/Answer\n2: Multiple Choice\n");
+          "Would you like to make a general `Question/Answer` card or a `Multiple Choice` card?\n1: Question/Answer\n2: Multiple Choice\n3: Quit\n");
       try {
         choice = scanner.nextInt();
         scanner.nextLine();
       } catch (Exception e) {
         scanner.nextLine();
       }
-      clear();
       if (choice == 1) {
         System.out.println("Please enter a question: ");
         String question = scanner.nextLine();
@@ -213,6 +214,10 @@ class UI {
             System.out.println(errorMessage);
           }
         }
+      } else if (choice == 3) {
+        active = false;
+        returnToMenu();
+        break;
       } else {
         clear();
         continue;
@@ -227,7 +232,6 @@ class UI {
           scanner.nextLine();
         }
         if (repeat == 2) {
-          clear();
           active = false;
           returnToMenu();
           break;
