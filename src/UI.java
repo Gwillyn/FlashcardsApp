@@ -42,7 +42,7 @@ class UI {
       clear();
       System.out.println("Welcome to the Flashcards app\n");
       if (file.getHighScore() > 0) {
-        System.out.println("       High-Score: " + file.getHighScore());
+        System.out.println("       High-Score: " + file.getHighScore() + "/" + file.cards.size());
 
       } else {
         System.out.println("       No High Score!");
@@ -147,7 +147,7 @@ class UI {
     while (active) {
       int choice = 0;
       System.out.println(
-          "Would you like to make a general `Question/Answer` card or a `Multiple Choice` card?\n1: Question/Answer\n2: Multiple Choice\n3: Quit\n");
+          "Would you like to make a general `Question/Answer` card or a `Multiple Choice` card?\n1: Question/Answer\n2: Multiple Choice\n3: Menu\n");
       try {
         choice = scanner.nextInt();
         scanner.nextLine();
@@ -155,19 +155,19 @@ class UI {
         scanner.nextLine();
       }
       if (choice == 1) {
-        System.out.println("Please enter a question: ");
+        System.out.println("\nPlease enter a question: ");
         String question = scanner.nextLine();
-        System.out.println("Please enter an answer: ");
+        System.out.println("\nPlease enter an answer: ");
         String answer = scanner.nextLine();
         file.addCard(new Flashcard(question, answer));
-        System.out.println("Card added...");
+        System.out.println("\nCard added...");
       } else if (choice == 2) {
         String[] answers;
-        System.out.println("Please enter a question: ");
+        System.out.println("\nPlease enter a question: ");
         String question = scanner.nextLine();
         int choices = 0;
         while (true) {
-          System.out.println("Please enter the number of multiple choices you'd like [between 2 and 5]: ");
+          System.out.println("\nPlease enter the number of multiple choices you'd like [between 2 and 5]: ");
           try {
             choices = scanner.nextInt();
             scanner.nextLine();
@@ -178,18 +178,17 @@ class UI {
             answers = new String[choices];
             break;
           } else {
-            clear();
             System.out.println(errorMessage);
           }
         }
 
         for (int i = 0; i < answers.length; i++) {
-          System.out.println("Enter your answer " + (i + 1) + ": ");
+          System.out.println("\nEnter your answer " + (i + 1) + ": ");
           String answer = scanner.nextLine();
           answers[i] = answer;
         }
         while (true) {
-          System.out.println("Which answer is the correct one: ");
+          System.out.println("\nWhich answer is the correct one: ");
           for (int i = 0; i < answers.length; i++) {
             System.out.println((i + 1) + ": " + answers[i]);
           }
@@ -198,19 +197,16 @@ class UI {
             rightAnswer = scanner.nextInt() - 1;
             scanner.nextLine();
           } catch (InputMismatchException e) {
-            clear();
             System.out.println(errorMessage);
             scanner.nextLine();
             continue;
           }
           if (rightAnswer >= 0 && rightAnswer < answers.length) {
             file.addCard(new ChoiceCard(question, answers, rightAnswer));
-            clear();
-            System.out.println("Card added...");
+            System.out.println("\nCard added...");
             break;
 
           } else {
-            clear();
             System.out.println(errorMessage);
           }
         }
@@ -224,7 +220,7 @@ class UI {
       }
       int repeat = 0;
       while (true) {
-        System.out.println("Would you like to add another card? [1: yes, 2: No]");
+        System.out.println("\nWould you like to add another card? [1: yes, 2: No]");
         try {
           repeat = scanner.nextInt();
           scanner.nextLine();

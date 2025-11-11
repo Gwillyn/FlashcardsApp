@@ -45,14 +45,14 @@ class CardManager {
     int score = 0;
     for (Flashcard card : cards) {
       UI.clear();
-      System.out.println("Question: \n" + card.getQuestion());
+      System.out.println("Question: \n\n" + card.getQuestion() + "\n");
       if (card instanceof ChoiceCard choiceCard) {
         String[] answers = choiceCard.getAnswers();
         int rightAnswer = choiceCard.getRightAnswer();
         for (int i = 0; i < answers.length; i++) {
           System.out.println((i + 1) + ": " + answers[i]);
         }
-        System.out.println("\nPlease select the right answer: ");
+        System.out.println("\n\nPlease select the right answer: ");
         while (true) {
           int choice = 0;
           try {
