@@ -48,7 +48,7 @@ class UI {
         System.out.println("       No High Score!");
       }
       System.out.println("\nChoose one of the following:");
-      System.out.println("1: Play\n2: Load Cards\n3: Add Cards\n4: Delete Cards\n5: Quit\n");
+      System.out.println("1: Play\n2: Load Cards\n3: Add Cards\n4: Delete Cards\n5: Reset Score\n6: Quit\n");
 
       int response = 0;
       try {
@@ -63,7 +63,7 @@ class UI {
       // Main game loop UI.
       switch (response) {
         case 1:
-          file.playCards(scanner);
+          playCards(file, scanner);
           break;
         case 2:
           break;
@@ -74,6 +74,9 @@ class UI {
           deleteCard(scanner, file);
           break;
         case 5:
+          resetScore(file, scanner);
+          break;
+        case 6:
           running = false;
           break;
         default:
@@ -239,6 +242,93 @@ class UI {
           System.out.println(errorMessage);
         }
       }
+    }
+  }
+
+  private static void resetScore(CardManager file, Scanner scanner) {
+    clear();
+    System.out.println("Would you like to reset your high-score to 0? [1: Yes, 2: No]");
+    while (true) {
+      int choice = 0;
+      try {
+        choice = scanner.nextInt();
+        scanner.nextLine();
+      } catch (InputMismatchException e) {
+        System.out.println("Please select a valid input...");
+        scanner.nextLine();
+        continue;
+      }
+      if (choice == 1) {
+        clear();
+        file.setScore(0);
+        System.out.println("High-Score was reset!");
+        returnToMenu();
+        break;
+      } else if (choice == 2) {
+        returnToMenu();
+        break;
+      } else {
+        System.out.println("Please select a valid input...");
+      }
+    }
+  }
+
+  public static void playCards(CardManager file, Scanner scanner) {
+    int score = 0;
+    for (Flashcard card : file.cards) {
+      clear();
+      System.out.println("Question: \n\n" + card.getQuestion() + "\n");
+      if (card instanceof ChoiceCard choiceCard) {
+        String[] answers = choiceCard.getAnswers();
+        int rightAnswer = choiceCard.getRightAnswer();
+        for (int i = 0; i < answers.length; i++) {
+          System.out.println((i + 1) + ": " + answers[i]);
+        }
+        System.out.println("\n\nPlease select the right answer: ");
+        while (true) {
+          int choice = 0;
+          try {
+            choice = (scanner.nextInt() - 1);
+            scanner.nextLine();
+          } catch (InputMismatchException e) {
+            System.out.println("\nPlease select a valid input...\n");
+            scanner.nextLine();
+          }
+          if (choice < 0 || choice >= answers.length) {
+            System.out.println("\nPlease select a valid input...\n");
+          } else if (choice == rightAnswer) {
+            score++;
+            System.out.println("\nThat is correct!            Score: " + score);
+            System.out.println("\nPress [enter] to continue\n");
+            scanner.nextLine();
+            break;
+          } else {
+            System.out.println("\nWrong answer!");
+            System.out.println("\nPress [enter] to continue\n");
+            scanner.nextLine();
+            break;
+          }
+        }
+
+      } else {
+        System.out.println("\nEnter the one-word answer you think it is: \n");
+        String choice = scanner.nextLine();
+        if (choice.toLowerCase().equals(card.getAnswer().toLowerCase())) {
+          score++;
+          System.out.println("\nThat is correct!              Score " + score);
+          System.out.println("\nPress [enter] to continue\n");
+          scanner.nextLine();
+        } else {
+          System.out.println("\nWrong answer!");
+          System.out.println("\nPress [enter] to continue\n");
+          scanner.nextLine();
+        }
+
+      }
+      if (score > file.highscore) {
+        file.highscore = score;
+      }
+
     }
   }
 }
