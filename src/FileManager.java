@@ -1,24 +1,43 @@
 import java.io.*;
-import java.util.Scanner;
+import java.io.File;
 
 class FileManager {
-  public static void loadFile(String file) throws IOException {
-    FileReader fileReader = new FileReader(file);
-    BufferedReader reader = new BufferedReader(fileReader);
-    String line;
-    while ((line = reader.readLine()) != null) {
-      String[] sections = line.split("::", 2);
-      if (sections.length == 2) {
-        String question = parts[0];
-        String answer = parts[1];
 
-      }
+  static File f = new File("../saves/");
+  static File[] files = f.listFiles();
+
+  public static File[] getFiles() {
+    return files;
+  }
+
+  public static File getFile() {
+    return f;
+  }
+
+  public static void loadFile(String file) {
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+      writer.close();
+    } catch (IOException e) {
+      System.out.println("Failed");
     }
 
   }
 
-  public static void saveFile() {
-    System.out.println("Saving File");
+  public static void listFile() {
+    if (files != null) {
+      int i = 1;
+      for (File file : files) {
+        System.out.print(i + ": ");
+        System.out.print(file.getName());
+        System.out.println();
+        i++;
+      }
+    } else {
+      System.out.println("There are no save files...");
+      UI.returnToMenu();
+    }
   }
 
 }

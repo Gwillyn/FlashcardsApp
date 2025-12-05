@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.io.File;
 
 class UI {
 
@@ -66,6 +67,7 @@ class UI {
           playCards(file, scanner);
           break;
         case 2:
+          loadCards(scanner);
           break;
         case 3:
           addCardChoice(scanner, file);
@@ -143,7 +145,7 @@ class UI {
     }
   }
 
-  static private void addCardChoice(Scanner scanner, CardManager file) {
+  private static void addCardChoice(Scanner scanner, CardManager file) {
     String errorMessage = "Please enter a valid input...";
     boolean active = true;
     clear();
@@ -330,5 +332,31 @@ class UI {
       }
 
     }
+  }
+
+  public static void loadCards(Scanner scanner) {
+    System.out.println("From the selection, please enter the the file you would like to load: \n");
+    File[] files = FileManager.getFiles();
+
+    FileManager.listFile();
+    System.out.println();
+    int choice;
+    while (true) {
+      try {
+        choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice < 0 || choice > files.length) {
+          System.out.println("Please select a valid input...");
+          continue;
+        }
+        break;
+      } catch (InputMismatchException e) {
+        System.out.println("Please select a valid input...");
+      }
+    }
+    FileManager.loadFile(files[choice - 1].toString());
+    scanner.nextLine();
+
   }
 }
