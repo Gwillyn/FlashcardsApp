@@ -16,9 +16,8 @@ class FileManager {
 
   public static void loadFile(String file) {
     try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-      writer.close();
+      BufferedReader reader = new BufferedReader(new FileReader(file));
+      reader.close();
     } catch (IOException e) {
       System.out.println("Failed");
     }

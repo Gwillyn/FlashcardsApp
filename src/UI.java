@@ -314,7 +314,7 @@ class UI {
 
       } else {
         System.out.println("\nEnter the one-word answer you think it is: \n");
-        String choice = scanner.nextLine();
+        String choice = scanner.nextLine().trim();
         if (choice.toLowerCase().equals(card.getAnswer().toLowerCase())) {
           score++;
           System.out.println("\nThat is correct!              Score " + score);
@@ -343,10 +343,11 @@ class UI {
     int choice;
     while (true) {
       try {
+        System.out.println(files.length);
         choice = scanner.nextInt();
         scanner.nextLine();
 
-        if (choice < 0 || choice > files.length) {
+        if (choice < 1 || choice > files.length) {
           System.out.println("Please select a valid input...");
           continue;
         }
